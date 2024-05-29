@@ -11,6 +11,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Header from './containers/Header/Header';
 import Home from './containers/Home/Home';
 import { getIsAuthed } from './store/selectors';
+import Events from "./containers/Events/Events";
 
 function App({ isAuthed }) {
     return (
@@ -24,6 +25,7 @@ function App({ isAuthed }) {
                 />
                 <Route exact path="/" component={Home} />
                 <Route path="/news" component={News} />
+                <Route path="/events" component={Events} />
                 <Route path="/login" component={Login} />
                 <Route component={NotFound} />
             </Switch>

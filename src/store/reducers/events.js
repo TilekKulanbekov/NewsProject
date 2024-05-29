@@ -1,31 +1,31 @@
 import {
-    FETCH_CYBERSECURITY_NEWS_FAILURE,
-    FETCH_CYBERSECURITY_NEWS_REQUEST,
-    FETCH_CYBERSECURITY_NEWS_SUCCESS
+    FETCH_CYBERSECURITY_EVENTS_FAILURE,
+    FETCH_CYBERSECURITY_EVENTS_REQUEST,
+    FETCH_CYBERSECURITY_EVENTS_SUCCESS
 } from "../actions/actionTypes";
 
 
 const initialState = {
-    articles: [],
+    events: [],
     isLoading: false,
     error: null,
 };
 
-const newsReducer = (state = initialState, action) => {
+const eventReducer = (state = initialState, action) => {
     switch (action.type) {
-        case FETCH_CYBERSECURITY_NEWS_REQUEST:
+        case FETCH_CYBERSECURITY_EVENTS_REQUEST:
             return {
                 ...state,
                 isLoading: true,
                 error: null,
             };
-        case FETCH_CYBERSECURITY_NEWS_SUCCESS:
+        case FETCH_CYBERSECURITY_EVENTS_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
-                articles: action.payload,
+                events: action.payload,
             };
-        case FETCH_CYBERSECURITY_NEWS_FAILURE:
+        case FETCH_CYBERSECURITY_EVENTS_FAILURE:
             return {
                 ...state,
                 isLoading: false,
@@ -36,4 +36,4 @@ const newsReducer = (state = initialState, action) => {
     }
 };
 
-export default newsReducer;
+export default eventReducer;

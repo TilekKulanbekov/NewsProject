@@ -1,27 +1,29 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bool, func, shape, string } from 'prop-types';
-import { logout } from '../../store/actions';
+import { useTranslation } from 'react-i18next';
 import LoginButton from '../../UI/LoginButton/LoginButton';
 import { getIsAuthed } from '../../store/selectors';
 import routes from '../../helpers/routes';
+import { logout } from '../../store/actions/auth';
 
-class Header extends Component {
-    state = {
-        isClosed: true,
+// eslint-disable-next-line no-shadow
+const Header = ({ isAuthed, logout, location }) => {
+    const { t, i18n } = useTranslation();
+    const [isClosed, setIsClosed] = useState(true);
+
+    const menuHandler = () => {
+        setIsClosed(!isClosed);
     };
 
-    menuHandler = () => {
-        const { isClosed } = this.state;
-        this.setState({ isClosed: !isClosed });
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
     };
 
-    renderLinks = (arr) => {
-        const { isAuthed, location } = this.props;
-        const { pathname } = location;
+    const renderLinks = (arr) => {
         return arr.map((item) => {
-            if (item.path === pathname) {
+            if (item.path === location.pathname) {
                 return (
                     <p key={item.id} className="navbar-item">
                         {item.name}
@@ -45,62 +47,50 @@ class Header extends Component {
         });
     };
 
-    render() {
-        // eslint-disable-next-line no-shadow
-        const { isAuthed, logout } = this.props;
-        const { isClosed } = this.state;
-
-        return (
-            <header className="has-background-light">
-                <div className="container">
-                    <nav
-                        className="navbar has-background-light"
-                        role="navigation"
-                        aria-label="main navigation"
-                    >
-                        <div className="navbar-brand">
-                            <h2 className="navbar-item is-size-4 is-uppercase has-text-weight-semibold">
-                                Новости
-                            </h2>
-                            <button
-                                type="button"
-                                className={'navbar-burger button is-text is-radiusless'.concat(
-                                    isClosed ? '' : ' is-active'
-                                )}
-                                aria-label="menu"
-                                aria-expanded="false"
-                                data-target="navbarMenu"
-                                onClick={this.menuHandler}
-                            >
-                                <span aria-hidden="true" />
-                                <span aria-hidden="true" />
-                                <span aria-hidden="true" />
-                            </button>
-                        </div>
-                        <div
-                            className={'navbar-menu'.concat(
-                                isClosed ? '' : ' is-active'
-                            )}
-                            id="navbarMenu"
+    return (
+        <header className="has-background-light">
+            <div className="container">
+                <nav
+                    className="navbar has-background-light"
+                    role="navigation"
+                    aria-label="main navigation"
+                >
+                    <div className="navbar-brand">
+                        <h2 className="navbar-item is-size-4 is-uppercase has-text-weight-semibold">
+                            {t('news')}
+                        </h2>
+                        <button
+                            type="button"
+                            className={`navbar-burger button is-text is-radiusless${isClosed ? '' : ' is-active'}`}
+                            aria-label="menu"
+                            aria-expanded="false"
+                            data-target="navbarMenu"
+                            onClick={menuHandler}
                         >
-                            <div className="navbar-start">
-                                {this.renderLinks(routes)}
+                            <span aria-hidden="true" />
+                            <span aria-hidden="true" />
+                            <span aria-hidden="true" />
+                        </button>
+                    </div>
+                    <div className={`navbar-menu${isClosed ? '' : ' is-active'}`} id="navbarMenu">
+                        <div className="navbar-start">{renderLinks(routes)}</div>
+                        <div className="navbar-end">
+                            <div className="navbar-item">
+                                {/* eslint-disable-next-line react/button-has-type */}
+                                <button onClick={() => changeLanguage('en')}>English</button>
+                                {/* eslint-disable-next-line react/button-has-type */}
+                                <button onClick={() => changeLanguage('ru')}>Русский</button>
                             </div>
-                            <div className="navbar-end">
-                                <div className="navbar-item">
-                                    <LoginButton
-                                        isAuthed={isAuthed}
-                                        logout={logout}
-                                    />
-                                </div>
+                            <div className="navbar-item">
+                                <LoginButton isAuthed={isAuthed} logout={logout} />
                             </div>
                         </div>
-                    </nav>
-                </div>
-            </header>
-        );
-    }
-}
+                    </div>
+                </nav>
+            </div>
+        </header>
+    );
+};
 
 Header.propTypes = {
     isAuthed: bool.isRequired,

@@ -1,32 +1,33 @@
+// src/containers/Events/Events.js
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { arrayOf, bool, shape, string, func } from 'prop-types';
-import { fetchCybersecurityNews } from '../../store/actions/news';
-import NewsItem from '../../components/NewsItem/NewsItem';
+import { fetchCybersecurityEvents } from '../../store/actions/events';
+import EventItem from '../../components/EventItem/EventItem';
 import Loader from '../../UI/Loader/Loader';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import Section from '../../UI/Section/Section';
 
-class News extends Component {
+class Events extends Component {
     componentDidMount() {
         // eslint-disable-next-line no-shadow
-        const { fetchCybersecurityNews } = this.props;
-        fetchCybersecurityNews();
+        const { fetchCybersecurityEvents } = this.props;
+        fetchCybersecurityEvents();
     }
 
     renderContent = (arr) => {
         if (arr.length === 0) {
-            return <p className="title">Новостей нет</p>;
+            return <p className="title">Событий нет</p>;
         }
 
         return (
             <>
-                <h2 className="title">Новости по кибербезопасности</h2>
+                <h2 className="title">События по кибербезопасности</h2>
                 <div className="columns is-multiline">
                     {arr.map((item, index) => (
                         // eslint-disable-next-line react/no-array-index-key
                         <div className="column is-one-third" key={index}>
-                            <NewsItem item={item} />
+                            <EventItem item={item} />
                         </div>
                     ))}
                 </div>
@@ -35,10 +36,10 @@ class News extends Component {
     };
 
     render() {
-        const { isLoading, news, errorMessage } = this.props;
+        const { isLoading, events, errorMessage } = this.props;
         return (
             <Section>
-                {news && this.renderContent(news)}
+                {events && this.renderContent(events)}
                 {isLoading && <Loader />}
                 {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
             </Section>
@@ -46,11 +47,11 @@ class News extends Component {
     }
 }
 
-News.propTypes = {
+Events.propTypes = {
     isLoading: bool.isRequired,
     errorMessage: string,
-    fetchCybersecurityNews: func.isRequired,
-    news: arrayOf(
+    fetchCybersecurityEvents: func.isRequired,
+    events: arrayOf(
         shape({
             title: string,
             description: string,
@@ -60,19 +61,24 @@ News.propTypes = {
                 name: string,
             }),
             publishedAt: string,
+            eventDetails: shape({
+                location: string,
+                date: string,
+                image: string,
+            }),
         })
     ),
 };
 
-News.defaultProps = {
-    news: [],
+Events.defaultProps = {
+    events: [],
     errorMessage: '',
 };
 
 const mapStateToProps = (state) => ({
-    news: state.news.articles,
-    isLoading: state.news.isLoading,
-    errorMessage: state.news.error,
+    events: state.events.events,
+    isLoading: state.events.isLoading,
+    errorMessage: state.events.error,
 });
 
-export default connect(mapStateToProps, { fetchCybersecurityNews })(News);
+export default connect(mapStateToProps, { fetchCybersecurityEvents })(Events);

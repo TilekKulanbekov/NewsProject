@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bool, number, string, shape, arrayOf, func } from 'prop-types';
-import { fetchUserInfo } from '../../store/actions';
 import {
     getProfile,
     getProfileErrorMessage,
@@ -11,6 +10,7 @@ import {
 import Loader from '../../UI/Loader/Loader';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import Section from '../../UI/Section/Section';
+import {fetchUserInfo} from "../../store/actions/profile";
 
 class Profile extends Component {
     componentDidMount() {

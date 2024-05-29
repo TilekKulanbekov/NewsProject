@@ -8,6 +8,13 @@ export default [
         isAuthed: false,
     },
     {
+        id: 'events',
+        path: '/events',
+        name: 'События',
+        isExact: true,
+        isAuthed: false,
+    },
+    {
         id: 'profile',
         name: 'Профиль',
         path: '/profile',

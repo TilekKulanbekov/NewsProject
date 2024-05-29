@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { string, bool, func } from 'prop-types';
-import { auth } from '../../store/actions';
 import {
     getIsAuthed,
     getIsAuthLoading,
@@ -12,6 +11,7 @@ import Input from '../../UI/Input/Input';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import Section from '../../UI/Section/Section';
 import inputs from '../../helpers/inputs';
+import {auth} from "../../store/actions/auth";
 
 class Login extends Component {
     state = {
